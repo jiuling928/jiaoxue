@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>致瑞瑶 · 三十九天的情书</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Serif+SC:wght@400;600&display=swap ');
+
+{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+html, body {
+
+height: 100%;
+
+overflow: hidden;
+
+font-family: 'Noto Serif SC', serif;
+
+color: #4a2c2a;
+
+background: radial-gradient(ellipse at center, #fff5f7 0%, #ffeef2 60%, #fcdde7 100%);
+
+}
+
+/* 背景星星 */
+
+#stars {
+
+position: fixed;
+
+top: 0; left: 0;
+
+width: 100%; height: 100%;
+
+pointer-events: none;
+
+z-index: 0;
+
+}
+
+.star {
+
+position: absolute;
+
+background: #fff;
+
+border-radius: 50%;
+
+opacity: 0.8;
+
+animation: twinkle 3s infinite ease-in-out alternate;
+
+}
+
+@keyframes twinkle {
+
+from { opacity: 0.3; transform: scale(0.8); }
+
+to   { opacity: 1;   transform: scale(1.2); }
+
+}
+
+/* 视频背景 */
+
+#bgVideo {
+
+position: fixed; top: 0; left: 0;
+
+min-width: 100%; min-height: 100%;
+
+object-fit: cover;
+
+z-index: 1;
+
+opacity: 0.25;
+
+filter: blur(1px);
+
+}
+
+/* 主容器 */
+
+.container {
+
+position: relative;
+
+z-index: 2;
+
+width: 100%; height: 100%;
+
+display: flex;
+
+justify-content: center;
+
+align-items: center;
+
+perspective: 1800px;
+
+}
+
+/* 3D 书本 */
+
+.book {
+
+position: relative;
+
+width: 340px; height: 480px;
+
+transform-style: preserve-3d;
+
+transform: rotateX(18deg) rotateY(-8deg);
+
+transition: transform 0.8s ease;
+
+cursor: pointer;
+
+}
+
+.book:hover {
+
+transform: rotateX(15deg) rotateY(-5deg) scale(1.02);
+
+}
+
+.page {
+
+position: absolute;
+
+width: 100%; height: 100%;
+
+top: 0; left: 0;
+
+border-radius: 8px;
+
+box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+backface-visibility: hidden;
+
+overflow: hidden;
+
+}
+
+/* 封面 */
+
+.cover {
+
+background: linear-gradient(135deg, #fbd3e9, #f8c0d8);
+
+display: flex;
+
+flex-direction: column;
+
+justify-content: center;
+
+align-items: center;
+
+color: #6b2e4a;
+
+transform-origin: left center;
+
+transition: transform 1.2s ease;
+
+z-index: 3;
+
+}
+
+.cover h1 {
+
+font-family: 'Dancing Script', cursive;
+
+font-size: 2.4rem;
+
+margin-bottom: 0.4em;
+
+text-shadow: 1px 1px 3px rgba(255,255,255,0.6);
+
+}
+
+.cover p {
+
+font-size: 1rem;
+
+opacity: 0.8;
+
+}
+
+/* 内页 */
+
+.inside {
+
+background: #fffaf7;
+
+padding: 2em 1.6em;
+
+line-height: 1.9;
+
+font-size: 1rem;
+
+transform: rotateY(180deg);
+
+backface-visibility: hidden;
+
+z-index: 2;
+
+}
+
+.inside h2 {
+
+font-family: 'Dancing Script', cursive;
+
+font-size: 1.8rem;
+
+text-align: right;
+
+margin-bottom: 1em;
+
+color: #b85c73;
+
+}
+
+.inside p {
+
+text-indent: 2em;
+
+margin-bottom: 1.2em;
+
+text-align: justify;
+
+}
+
+.inside .signature {
+
+text-align: right;
+
+margin-top: 2em;
+
+font-family: 'Dancing Script', cursive;
+
+font-size: 1.4rem;
+
+color: #b85c73;
+
+}
+
+/* 翻页动画 */
+
+.book.flip .cover {
+
+transform: rotateY(-160deg);
+
+}
+
+/* 照片回闪层 */
+
+#photoFlash {
+
+position: fixed;
+
+top: 0; left: 0;
+
+width: 100%; height: 100%;
+
+pointer-events: none;
+
+z-index: 5;
+
+opacity: 0;
+
+}
+
+.photo {
+
+position: absolute;
+
+width: 160px; height: 100px;
+
+object-fit: cover;
+
+border-radius: 8px;
+
+box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+opacity: 0;
+
+animation: flash 2.5s ease forwards;
+
+}
+
+@keyframes flash {
+
+0%   { opacity: 0; transform: scale(0.8) rotate(-8deg); }
+
+20%  { opacity: 1; transform: scale(1) rotate(0deg); }
+
+80%  { opacity: 1; transform: scale(1) rotate(0deg); }
+
+100% { opacity: 0; transform: scale(1.1) rotate(5deg); }
+
+}
+
+/* 提示文字 */
+
+.tip {
+
+position: fixed;
+
+bottom: 30px; left: 50%;
+
+transform: translateX(-50%);
+
+font-size: 0.9rem;
+
+color: #a0526d;
+
+opacity: 0.8;
+
+z-index: 6;
+
+animation: fadeInOut 3s ease infinite;
+
+}
+
+@keyframes fadeInOut {
+
+0%,100% { opacity: 0.4; }
+
+50%      { opacity: 1; }
+
+}
+
+/* 响应式 */
+
+@media (max-width: 600px) {
+
+.book {
+
+width: 90vw;
+
+height: 66vw;
+
+max-width: 320px;
+
+max-height: 460px;
+
+}
+
+.cover h1 { font-size: 2rem; }
+
+.inside { padding: 1.4em 1em; font-size: 0.95rem; }
+
+.inside h2 { font-size: 1.5rem; }
+
+.inside .signature { font-size: 1.2rem; }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<video id="bgVideo" autoplay muted loop playsinline>
+
+<source src="your-video.mp4" type="video/mp4"/>
+
+您的浏览器不支持视频播放。
+
+</video>
+
+<canvas id="stars"></canvas>
+
+<div id="photoFlash"></div>
+
+<div class="container">
+
+<div class="book" id="book">
+
+<div class="page cover">
+
+致瑞瑶
+
+三十九天的情书
+
+</div>
+
+<div class="page inside">
+
+给我的女孩
+
+时间总是莫名其妙的，在我们不注意间就偷偷溜走了。回首这39天，有苦有乐有喜有悲，我们的感情似乎在这一次次的磨砺中变得更加坚定起来。
+
+我会在你背后静静守望，那份真挚的眼神我想是不会骗人的。不知什么时候我发现我离不开你了，我总会在不经意间会想起那个亮丽的身影，她俏皮的一笑，都让我开心一整天。她仿佛充满了我的生活，从此我的时光不再是家到学校的两点一线。我的心里不再空荡。我真正感受到了被爱是什么感觉。我真的很感谢缘分能让我们相聚，让我们可以陪伴彼此。
+
+人们总是说爱情应该是热烈奔放，可我想说爱情也不乏纯真内敛，我们在相处中成长，在一个个动人的画面里体会到爱情的真挚，它也许不是那么热烈，但却足以让我们的“银河”升华。
+
+三十九天不会是结束，我想念于你待过的日日夜夜，也期待我们以后的每一天。
+
+我相信爱情会在时间的考验下绽放出它的华容。乘着银河的舰船走向更光明的远方吧！
+
+<p class="signature">
+
+“此情不渝相守时，遥寄银河系相思。”
+
+    2026年1月20日
+
+—————刘子豪
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="tip">点击情书，翻开我们的故事 ✨</div>
+
+<script>
+
+// 背景星星
+
+const canvas = document.getElementById('stars');
+
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+
+canvas.width = window.innerWidth;
+
+canvas.height = window.innerHeight;
+
+}
+
+resizeCanvas();
+
+window.addEventListener('resize', resizeCanvas);
+
+const stars = Array.from({length: 60}, () => ({
+
+x: Math.random() * canvas.width,
+
+y: Math.random() * canvas.height,
+
+r: Math.random() * 1.2 + 0.3,
+
+a: Math.random(),
+
+d: Math.random() * 0.02 + 0.005
+
+}));
+
+function drawStars() {
+
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+stars.forEach(s => {
+
+s.a += s.d;
+
+if (s.a > 1) s.a = 0;
+
+ctx.beginPath();
+
+ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+
+ctx.fillStyle =  rgba(255,255,255,${s.a}) ;
+
+ctx.fill();
+
+});
+
+requestAnimationFrame(drawStars);
+
+}
+
+drawStars();
+
+// 情书翻页
+
+const book = document.getElementById('book');
+
+book.addEventListener('click', () => {
+
+book.classList.toggle('flip');
+
+});
+
+// 照片回闪
+
+const photoFlash = document.getElementById('photoFlash');
+
+const photos = [
+
+'photo1.jpg',
+
+'photo2.jpg',
+
+'photo3.jpg',
+
+'photo4.jpg',
+
+'photo5.jpg'
+
+];
+
+function showRandomPhoto() {
+
+const img = document.createElement('img');
+
+img.src = photos[Math.floor(Math.random() * photos.length)];
+
+img.className = 'photo';
+
+img.style.top = Math.random() * 80 + 10 + '%';
+
+img.style.left = Math.random() * 80 + 10 + '%';
+
+img.style.animationDelay = Math.random() * 0.8 + 's';
+
+photoFlash.appendChild(img);
+
+setTimeout(() => { img.remove(); }, 2600);
+
+}
+
+// 翻书时触发照片回闪
+
+book.addEventListener('click', () => {
+
+for (let i = 0; i < 5; i++) {
+
+setTimeout(showRandomPhoto, i * 300);
+
+}
+
+});
+
+// 自动翻页一次，展示效果
+
+setTimeout(() => {
+
+book.classList.add('flip');
+
+}, 1500);
+
+</script>
+
+</body>
+
+</html>
